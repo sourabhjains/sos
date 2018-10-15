@@ -72,7 +72,8 @@ class PowerPC(Plugin, RedHatPlugin, UbuntuPlugin, DebianPlugin):
                 "serv_config -l",
                 "bootlist -m both -r",
                 "lparstat -i",
-                "ctsnap -xrunrpttr -d %s" % (ctsnap_path)
+                "ctsnap -xrunrpttr -d %s" % (ctsnap_path),
+                "lsscr -a"
             ])
 
         if isPowerNV:
