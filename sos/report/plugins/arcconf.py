@@ -22,10 +22,34 @@ class arcconf(Plugin, IndependentPlugin):
 
     def setup(self):
 
-        # get list of adapters
-        self.add_cmd_output([
-            "arcconf getconfig 1",
-            "arcconf list",
-            "arcconf GETLOGS 1 UART"
-        ])
+    # get list of adapters
+    self.add_cmd_output([
+        "arcconf list"
+    ])
+
+    # Get the list of available controller
+    listarcconf = self.collect_cmd_output("arcconf list")
+
+    # Parse the 'arcconf list' output and extract controller IDs
+    # For each Controller ID found in 'arcconf list', add commands
+    # to getconfig and GETLOGS
+    if listarcconf['status'] == 0:
+        for line in listarcconf['output'].splitlines():
+            words = line.split()
+
+            # Skip line has less than two words
+            if (len(words) < 2)
+                continue
+            # Line with "Controller XX: *" has Controller ID
+            if words[0] != "Controller" or not words[1].endswith(":"):
+                continue
+
+            # Controller ID ends with :, so remove it
+            controller_id = words[1][:-1]
+
+            # Add new command with Controller ID
+            self.add_cmd_output([
+                "arcconf getconfig %s" % controller_id,
+                "arcconf GETLOGS %s UART" % controller_id
+            ])
 # vim: et ts=4 sw=4
